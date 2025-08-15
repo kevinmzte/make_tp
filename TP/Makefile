@@ -40,6 +40,15 @@ bin/%: $(BIN_DIR)/%.o $(BIN_DIR)/cap1/listing1.2.o
 	@mkdir -p $(dir $@)
 	$(CXX) $^ -o $@
 
+# --- Ejecutables individuales (para make listingX.Y) ---
+BIN_DIR/%: $(BIN_DIR)/%.o
+	@mkdir -p $(dir $@)
+	$(CXX) $< -o $@
+	
+# Mapear make listingX.Y al binario correspondiente
+$(foreach c,$(CAPS),$(foreach l,$(wildcard $(SRC_DIR)/cap$(c)/listing*.c $(SRC_DIR)/cap$(c)/listing*.cpp), \
+  $(eval $(notdir $(basename $(l))): $(BIN_DIR)/cap$(c)/$(notdir $(basename $(l)))) ))
+
 # --- Targets por capítulo (todos los ejecutables de ese capítulo) ---
 $(foreach c,$(CAPS), \
   $(eval CAP$(c)_EXES := $(patsubst $(SRC_DIR)/cap$(c)/listing%.c,$(BIN_DIR)/cap$(c)/listing%,$(wildcard $(SRC_DIR)/cap$(c)/listing*.c))) \
