@@ -34,18 +34,18 @@ $(BIN_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# --- Regla especial para listing1.1 ---
-listing1.1: bin/cap1/listing1.1
-bin/cap1/listing1.1: $(BIN_DIR)/cap1/listing1.1.o $(BIN_DIR)/cap1/listing1.2.o
+# --- Ejecutables finales por capítulo ---
+# listing1.1 depende de su .c y .cpp asociado
+bin/%: $(BIN_DIR)/%.o $(BIN_DIR)/cap1/listing1.2.o
 	@mkdir -p $(dir $@)
 	$(CXX) $^ -o $@
 
-# --- Ejecutables individuales genéricos ---
+# --- Ejecutables individuales (para make listingX.Y) ---
 bin/%: $(BIN_DIR)/%.o
 	@mkdir -p $(dir $@)
 	$(CXX) $< -o $@
 
-# --- Alias make listingX.Y para todos los listings ---
+# Mapear make listingX.Y al binario correspondiente
 $(foreach c,$(CAPS),$(foreach l,$(wildcard $(SRC_DIR)/cap$(c)/listing*.c $(SRC_DIR)/cap$(c)/listing*.cpp), \
   $(eval $(notdir $(basename $(l))): $(BIN_DIR)/cap$(c)/$(notdir $(basename $(l)))) ))
 
