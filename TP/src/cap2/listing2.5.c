@@ -1,5 +1,7 @@
-#include <stdlib.h>
+#define _POSIX_C_SOURCE 200809L
 #include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 /* A handle for a temporary file created with write_temp_file. In
  this implementation, it's just a file descriptor. */

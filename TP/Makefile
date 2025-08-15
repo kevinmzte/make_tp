@@ -45,6 +45,11 @@ bin/%: $(BIN_DIR)/%.o
 	@mkdir -p $(dir $@)
 	$(CXX) $< -o $@
 
+# --- Regla especial para listing2.5 (main + librería) ---
+bin/cap2/listing2.5: src/cap2/listing2.5_main.c src/cap2/listing2.5.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $^ -o $@
+
 # Mapear make listingX.Y al binario correspondiente
 $(foreach c,$(CAPS),$(foreach l,$(wildcard $(SRC_DIR)/cap$(c)/listing*.c $(SRC_DIR)/cap$(c)/listing*.cpp), \
   $(eval $(notdir $(basename $(l))): $(BIN_DIR)/cap$(c)/$(notdir $(basename $(l)))) ))
